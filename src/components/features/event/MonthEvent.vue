@@ -4,16 +4,16 @@
 
 <script setup lang="ts">
 import { Badge } from "@/components/ui/badge";
-import { useEventStore } from "@/stores/useEventStore";
+import { useMaintainStore } from "@/stores/useMaintainStore";
 import { Color } from "@/types/colors";
 
 const props = defineProps<{
-  event: DisplayableEvent;
+  event: CalendarMaintain;
 }>();
 
-const eventStore = useEventStore()
+const maintainStore = useMaintainStore()
 
 function handleClick() {
-  eventStore.dispatch({ type: 'update-edit-id', payload: props.event.id })
+  maintainStore.dispatch({ type: 'update-edit-id', payload: props.event.id })
 }
 </script>

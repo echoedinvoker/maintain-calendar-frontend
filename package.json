@@ -13,6 +13,7 @@
   "dependencies": {
     "@mdi/js": "^7.3.67",
     "@vee-validate/zod": "^4.12.3",
+    "@vuepic/vue-datepicker": "^7.4.0",
     "@vueuse/core": "^10.7.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",

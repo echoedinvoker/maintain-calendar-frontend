@@ -4,12 +4,13 @@ import { ref } from 'vue'
 
 interface Action {
   type: string
-  payload: any
+  payload?: any
 }
 
-export const useEventStore = defineStore('event', () => {
+export const useMaintainStore = defineStore('maintain', () => {
   const state = ref(initState)
   function dispatch(action: Action) { state.value = reducer(state.value, action) }
+
 
 
   return {

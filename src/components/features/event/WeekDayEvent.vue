@@ -20,17 +20,17 @@
 </template>
 
 <script setup lang="ts">
-import { useEventStore } from '@/stores/useEventStore';
+import { useMaintainStore } from '@/stores/useMaintainStore';
 import { Color } from '@/types/colors'
 enum Status { 'alertCircle', 'arrowRightDropCircle', 'closeCircle' }
 
 const props = defineProps<{
-  event: DisplayableEvent
+  event: CalendarMaintain
 }>()
 
-const eventStore = useEventStore()
+const maintainStore = useMaintainStore()
 
 function handleClick() {
-  eventStore.dispatch({ type: 'update-edit-id', payload: props.event.id })
+  maintainStore.dispatch({ type: 'update-current-id', payload: props.event.id })
 }
 </script>

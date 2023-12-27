@@ -1,12 +1,12 @@
 <template>
   <DialogContent class="sm:max-w-[425px]">
     <DialogHeader>
-      <DialogTitle>Edit</DialogTitle>
+      <DialogTitle>{{ maintainStore.state.currentId ? 'Edit' : 'Create' }}</DialogTitle>
       <DialogDescription>
         Make changes to your profile here. Click save when you're done.
       </DialogDescription>
     </DialogHeader>
-    <EventForm />
+    <MaintainForm />
   </DialogContent>
 </template>
 
@@ -17,10 +17,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import EventForm from './EventForm.vue'
+import MaintainForm from './MaintainForm.vue'
+import { useMaintainStore } from '@/stores/useMaintainStore';
+
+const maintainStore = useMaintainStore()
 
 defineProps<{
-  event: DisplayableEvent
+  event: CalendarMaintain
 }>()
 
 </script>

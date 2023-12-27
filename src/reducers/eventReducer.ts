@@ -1,12 +1,14 @@
-export const initState: EventState = {
-  editId: 0,
+export const initState: MaintainState = {
+  isOpen: false,
+  currentId: 0,
+  dob: ['', ''],
   events: [
     {
       id: 1,
       title: 'Machine 4',
-      time: { start: "2023-12-26 02:05", end: "2023-12-26 04:35" },
+      time: { start: "2023-12-27 02:05", end: "2023-12-27 04:35" },
       enabled: true,
-      status: 'normal',
+      status: 'warning',
       operator: 'John',
       isEditable: true,
       isCustom: true,
@@ -14,14 +16,13 @@ export const initState: EventState = {
     {
       id: 2,
       title: 'Machine 41',
-      time: { start: "2023-12-26 02:05", end: "2023-12-26 04:35" },
+      time: { start: "2023-12-27 03:05", end: "2023-12-27 05:35" },
       enabled: false,
-      status: 'normal',
-      operator: 'John',
+      status: 'danger',
       isEditable: true,
       isCustom: true,
     },
-  ] as DisplayableEvent[],
+  ],
   config: {
     week: {
       // Takes the value 'sunday' or 'monday'
@@ -52,32 +53,78 @@ export const initState: EventState = {
     showCurrentTime: true, // Display a line indicating the current time
     eventDialog: {
       isCustom: true,
-    }
+    },
+    dayIntervals: {
+      length: 15, // Length in minutes of each interval. Accepts values 15, 30 and 60 (the latter is the default)
+      height: 50, // The height of each interval
+      displayClickableInterval: true, // Needs to be set explicitly to true, if you want to display clickable intervals
+      intervalStyles: { backgroundColor: 'transparent', color: 'transparent' },
+    },
   }
 }
 
-export function reducer(state: any, action: any) {
+export function reducer(state: MaintainState, action: any) {
   switch (action.type) {
+    case 'update-current-id':
+      return {
+        ...state,
+        currentId: action.payload
+      }
+    case 'remove-event':
+      return {
+        ...state,
+        events: state.events.filter((event: CalendarMaintain) => event.id !== state.currentId)
+      }
+    case 'init-current-id':
+      return {
+        ...state,
+        currentId: 0
+      }
+    case 'open-dialog':
+      return {
+        ...state,
+        isOpen: true
+      }
+    case 'update-dob':
+      return {
+        ...state,
+        dob: action.payload
+      }
+    case 'create-event':
+      return {
+        ...state,
+        isOpen: false,
+        events: [
+          ...state.events,
+          {
+            id: Math.floor(Math.random() * 1000) + 1,
+            ...action.payload.data,
+            isEditable: true,
+            isCustom: true,
+          }
+        ]
+      }
+
+
     case 'update-event':
       return {
         ...state,
-        events: state.events.map((event: DisplayableEvent) => {
+        isOpen: false,
+        events: state.events.map((event: CalendarMaintain) => {
           if (event.id === action.payload.id) {
             return {
               ...event,
-              ...action.payload
+              ...action.payload.data,
+              time: {
+                ...event.time,
+                ...action.payload.data.time
+              }
             }
           }
           return event
         })
       }
 
-
-    case 'update-edit-id':
-      return {
-        ...state,
-        editId: action.payload
-      }
     default:
       throw new Error('Unexpected action')
   }
